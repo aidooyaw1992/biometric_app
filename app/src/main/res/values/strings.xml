@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">SM-92M</string>
+    <string-array name="alg_type_name">
+        <item>ISO 19794–2:2005</item>
+        <item>ISO 19794–2:2011</item>
+        <item>ANSI 378</item>
+    </string-array>
+    <string-array name="alg_type_dir_name">
+        <item>ISO2005</item>
+        <item>ISO2011</item>
+        <item>ANSI378</item>
+    </string-array>
+</resources>
