@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_details_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.VerificationActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/my_enrol_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back_arrow"
+            app:title="User Verification"
+            app:titleTextColor="@android:color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/user_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginVertical="@dimen/_16sdp"
+        android:background="@drawable/bg_white_rounded"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:queryBackground="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/my_enrol_toolbar" />
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginVertical="@dimen/_8sdp"
+        android:enabled="false"
+        android:text="Search Pensioneer"
+        android:textFontWeight="700"
+        android:textSize="@dimen/_10ssp"
+        app:cornerRadius="@dimen/_5sdp"
+        app:layout_constraintBottom_toTopOf="@id/shimmer_view_container"
+        app:layout_constraintEnd_toEndOf="@+id/user_search_view"
+        app:layout_constraintStart_toStartOf="@+id/user_search_view"
+        app:layout_constraintTop_toBottomOf="@id/user_search_view" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_24sdp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/btn_search">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            android:background="@drawable/rounded_corner" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/success_pension_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:background="@android:color/transparent"
+        android:elevation="4dp"
+        app:cardCornerRadius="@dimen/_6sdp"
+        app:layout_constraintTop_toBottomOf="@id/btn_search">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/user_content_include_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_8sdp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="@dimen/_48sdp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:src="@drawable/old_man"
+                app:civ_border_color="#BE0000"
+                app:civ_border_width="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/l_profile_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/profile_image"
+                app:layout_constraintStart_toEndOf="@id/profile_image"
+                app:layout_constraintTop_toTopOf="@id/profile_image">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_1sdp" />
+
+                <TextView
+                    android:id="@+id/item_user_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="User id" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_4sdp" />
+
+                <TextView
+                    android:id="@+id/item_full_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Full Name"
+                    tools:layout_editor_absoluteY="27dp" />
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_enrol"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="Enrol Biometric"
+                android:textFontWeight="700"
+                android:textSize="@dimen/_10ssp"
+                app:cornerRadius="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

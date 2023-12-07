@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="app_name">SM-92M</string>
+    <string name="app_name">PensionApplication</string>
+    <string name="no_content_available">No Content Available</string>
     <string-array name="alg_type_name">
         <item>ISO 19794–2:2005</item>
         <item>ISO 19794–2:2011</item>

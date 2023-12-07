@@ -41,16 +41,16 @@ public class DiskTemplates {
 
     }
 
-    synchronized byte[] getAll() {
+   public synchronized byte[] getAll() {
         return templates;
     }
 
-    synchronized int count() {
+   public synchronized int count() {
         return nameList.size();
     }
 
 
-    synchronized boolean put(String name, byte[] data) {
+    public synchronized boolean put(String name, byte[] data) {
         int size = nameList.size();
         boolean contains = nameList.contains(name);
         if (contains) {
@@ -88,7 +88,7 @@ public class DiskTemplates {
         return data;
     }
 
-    synchronized String getId(int index) {
+   public synchronized String getId(int index) {
         return nameList.get(index);
     }
 
@@ -98,7 +98,7 @@ public class DiskTemplates {
         return s;
     }
 
-    synchronized void clear() {
+  public  synchronized void clear() {
         Arrays.fill(templates, (byte) 0);
         nameList.clear();
         File[] files = new File(dirPath).listFiles();
