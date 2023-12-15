@@ -1,5 +1,6 @@
 package com.miaxis.demo.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.OneTimeWorkRequest;
@@ -12,6 +13,9 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.miaxis.demo.DiskTemplates;
@@ -70,12 +74,14 @@ public class RegisterBiometricActivity extends AppCompatActivity {
     private int algorithmType = ALGORITHM_ISO;
 
     private WorkManager mWorkManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityRegisterBiometricBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setSupportActionBar(binding.registerViewToolbar);
         mWorkManager = WorkManager.getInstance(getApplicationContext());
         mJustouchApi = new JustouchFingerAPI();
         mDriverApi = SM92MApiFactory.getInstance(this);
@@ -85,27 +91,25 @@ public class RegisterBiometricActivity extends AppCompatActivity {
         Intent intent = getIntent();
         PensionData user = (PensionData) intent.getSerializableExtra("data");
         binding.itemUserId.setText(user != null ? String.valueOf(user.getValue().get(0).getNo()) : "No ID");
-        binding.itemFullName.setText(user != null ? formatTitle(user.getValue().get(0).getTitle()) +" "+user.getValue().get(0).getFirstName() +" "+ user.getValue().get(0).getLastName() : "No Name");
+        binding.itemFullName.setText(user != null ? formatTitle(user.getValue().get(0).getTitle()) + " " + user.getValue().get(0).getFirstName() + " " + user.getValue().get(0).getLastName() : "No Name");
         binding.inactiveDate.setText(user != null ? user.getValue().get(0).getInactiveDate() : "N/A");
 
 
-        binding.btnEnrolFingerprint.setEnabled(true);
-
         binding.btnEnrolFingerprint.setOnClickListener(v -> {
-//            enroll();
-           simulateAsyncOperation()
-                   .subscribeOn(Schedulers.io())
-                   .doOnSubscribe(disposable -> {
-                       Log.d(TAG, "onSubscribe: running");
-                   })
-                   .observeOn(AndroidSchedulers.mainThread())
-
-                   .doOnComplete(() ->{
-                       Log.d(TAG, "simulateAsyncOperation: completed");
-                       showDialog("Upload Success");
-                   })
-
-                   .subscribe();
+            enroll();
+//           simulateAsyncOperation()
+//                   .subscribeOn(Schedulers.io())
+//                   .doOnSubscribe(disposable -> {
+//                       Log.d(TAG, "onSubscribe: running");
+//                   })
+//                   .observeOn(AndroidSchedulers.mainThread())
+//
+//                   .doOnComplete(() ->{
+//                       Log.d(TAG, "simulateAsyncOperation: completed");
+//                       showDialog("Upload Success");
+//                   })
+//
+//                   .subscribe();
         });
 
         testWorkManager(mWorkManager);
@@ -133,8 +137,26 @@ public class RegisterBiometricActivity extends AppCompatActivity {
         });
     }
 
-    private void testWorkManager(WorkManager workManager){
-    workManager.enqueue(OneTimeWorkRequest.from(UploadWorker.class));
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.clear_image_db:
+                clear();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    private void testWorkManager(WorkManager workManager) {
+        workManager.enqueue(OneTimeWorkRequest.from(UploadWorker.class));
     }
 
     private Completable simulateAsyncOperation() {
@@ -143,8 +165,9 @@ public class RegisterBiometricActivity extends AppCompatActivity {
         return Completable.timer(2000, java.util.concurrent.TimeUnit.MILLISECONDS);
 
     }
-    private String formatTitle(String title){
-        return  title.substring(0, 1).toUpperCase() + title.substring(1).toLowerCase();
+
+    private String formatTitle(String title) {
+        return title.substring(0, 1).toUpperCase() + title.substring(1).toLowerCase();
     }
 
     private String getAlgName(int algorithmType) {
@@ -313,30 +336,25 @@ public class RegisterBiometricActivity extends AppCompatActivity {
         return image;
     }
 
-    public Completable clearDiskTemplate(String typeName) {
-        return Completable.fromRunnable(() -> {
-            showLog("#Clear");
+    public void clearDiskTemplate() {
             mDiskTemplates.clear();
-            showLog("Clear all %s template successful", typeName);
-        }).subscribeOn(Schedulers.io());
+            showLog("Clear all %s template successful");
     }
+
 
     public void clear() {
         final String typeName = getAlgName(algorithmType);
+
+
         new AlertDialog.Builder(this)
                 .setTitle("Notice")
                 .setMessage(String.format("Do you want to delete all %s template ?", typeName))
                 .setPositiveButton("YES", (dialog, which) -> {
-                    clearDiskTemplate(typeName)
-                            .doOnError(
-                                    throwable -> {
-                                        Log.e(TAG, "clear: Error occurred", throwable);
-                                    }
-                            )
-                            .subscribe();
+                    runOnUiThread(this::clearDiskTemplate);
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+
     }
 
     void showLog(String fmt, Object... data) {

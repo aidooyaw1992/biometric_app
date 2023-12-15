@@ -8,16 +8,17 @@
     tools:context=".ui.RegisterBiometricActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/my_enrol_toolbar"
+        android:id="@+id/my_enrol_appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/register_view_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:elevation="4dp"
+            app:navigationIconTint="@color/white"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,26 +31,26 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/success_pension_content"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_8sdp"
-        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:background="@android:color/transparent"
         android:elevation="4dp"
         app:cardCornerRadius="@dimen/_6sdp"
-        app:layout_constraintTop_toBottomOf="@id/my_enrol_toolbar"
+        app:layout_constraintTop_toBottomOf="@id/my_enrol_appbar_layout"
         tools:layout_editor_absoluteX="14dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/user_content_include_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_8sdp"
             >
-<!--            android:paddingVertical="@dimen/_8sdp"-->
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="@dimen/_48sdp"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/_48sdp"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:src="@drawable/old_man"
                 app:civ_border_color="#BE0000"

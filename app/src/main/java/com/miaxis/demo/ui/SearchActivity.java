@@ -20,12 +20,13 @@ import com.miaxis.demo.viewmodel.SearchListViewModel;
 
 import javax.inject.Inject;
 
-public class SearchActivity extends AppCompatActivity  implements PensionListAdapter.OnItemClickListener {
+public class SearchActivity extends AppCompatActivity implements PensionListAdapter.OnItemClickListener {
     private static final String TAG = SearchActivity.class.getSimpleName();
     private ActivitySearchBinding binding;
 
     @Inject
     SearchListViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,32 +49,32 @@ public class SearchActivity extends AppCompatActivity  implements PensionListAda
         });
 
 
+        binding.btnSearch.setOnClickListener(v -> {
 
-        binding.btnSearch.setOnClickListener(v->{
-
-        viewModel.getUsers(binding.userSearchView.getQuery().toString())
-                .observe(this, listDataState -> {
-            if (listDataState.getStatus() == DataState.Status.SUCCESS) {
-                Log.d(TAG, "getUsers Success: " + listDataState.getData().size());
-                binding.shimmerViewContainer.setVisibility(View.GONE);
-                if(listDataState.getData().size()==0){
-                    binding.tvMessage.setVisibility(View.VISIBLE);
-                    binding.tvMessage.setText(R.string.no_content_available);
-                }
-                PensionListAdapter listAdapter = new PensionListAdapter(listDataState.getData(), this);
-                binding.rvPensionList.setHasFixedSize(true);
-                binding.rvPensionList.setLayoutManager(new LinearLayoutManager(this));
-                binding.rvPensionList.setAdapter(listAdapter);
-            } else if (listDataState.getStatus() == DataState.Status.ERROR) {
-                binding.shimmerViewContainer.setVisibility(View.GONE);
-                binding.tvMessage.setVisibility(View.VISIBLE);
-                binding.tvMessage.setText(String.format("Oops something went wrong. %s",listDataState.getErrorMessage() ));
-                Log.e(TAG, "getUsers: Failure " + listDataState.getErrorMessage());
-            } else {
-                binding.shimmerViewContainer.setVisibility(View.VISIBLE);
-                Log.i(TAG, "getUsers: Loading "+listDataState.getStatus());
-            }
-        });
+            viewModel.getUsers(binding.userSearchView.getQuery().toString())
+                    .observe(this, listDataState -> {
+                        if (listDataState.getStatus() == DataState.Status.SUCCESS) {
+                            Log.d(TAG, "getUsers Success: " + listDataState.getData().size());
+                            binding.shimmerViewContainer.setVisibility(View.GONE);
+                            if (listDataState.getData().size() == 0) {
+                                binding.tvMessage.setVisibility(View.VISIBLE);
+                                binding.tvMessage.setText(R.string.no_content_available);
+                            }
+                            PensionListAdapter listAdapter = new PensionListAdapter(listDataState.getData(), this);
+                            binding.rvPensionList.setHasFixedSize(true);
+                            binding.rvPensionList.setLayoutManager(new LinearLayoutManager(this));
+                            binding.rvPensionList.setAdapter(listAdapter);
+                            binding.tvMessage.setVisibility(View.GONE);
+                        } else if (listDataState.getStatus() == DataState.Status.ERROR) {
+                            binding.shimmerViewContainer.setVisibility(View.GONE);
+                            binding.tvMessage.setVisibility(View.VISIBLE);
+                            binding.tvMessage.setText(String.format("Oops something went wrong. %s", listDataState.getErrorMessage()));
+                            Log.e(TAG, "getUsers: Failure " + listDataState.getErrorMessage());
+                        } else {
+                            binding.shimmerViewContainer.setVisibility(View.VISIBLE);
+                            Log.i(TAG, "getUsers: Loading " + listDataState.getStatus());
+                        }
+                    });
         });
     }
 
